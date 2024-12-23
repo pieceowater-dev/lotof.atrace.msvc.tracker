@@ -12,7 +12,6 @@ import (
 
 type Config struct {
 	GrpcPort            string
-	RestPort            string
 	PostgresDatabaseDSN string
 	PostgresModels      []any
 }
@@ -31,7 +30,6 @@ func Inst() *Config {
 
 		instance = &Config{
 			GrpcPort:            getEnv("GRPC_PORT", "50051"),
-			RestPort:            getEnv("REST_PORT", "3000"),
 			PostgresDatabaseDSN: getEnv("POSTGRES_DB_DSN", "postgres://pieceouser:pieceopassword@localhost:5432/atrace.tracker?sslmode=disable"),
 			PostgresModels: []any{
 				// models to migration here:
