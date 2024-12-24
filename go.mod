@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	ariga.io/atlas-provider-gorm v0.5.0
 	github.com/joho/godotenv v1.5.1
-	github.com/pieceowater-dev/lotof.atrace.proto v0.0.4
+	github.com/pieceowater-dev/lotof.atrace.proto v0.0.11
 	github.com/pieceowater-dev/lotof.lib.gossiper/v2 v2.0.9
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.35.2
