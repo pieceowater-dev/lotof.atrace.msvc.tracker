@@ -13,6 +13,6 @@ type Route struct {
 type RouteMilestone struct {
 	gorm.Model
 	RouteID  uint `gorm:"not null;index"` // Foreign key to Route
-	PostID   uint `gorm:"not null;index"` // Foreign key to Post
+	PostID   uint `gorm:"not null"`       // Foreign key to Post
 	Priority uint `gorm:"not null"`       // Visit priority/order, starting from 1
 }
