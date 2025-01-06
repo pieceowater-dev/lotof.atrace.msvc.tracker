@@ -3,6 +3,7 @@ package post
 import (
 	"app/internal/core/cfg"
 	"app/internal/pkg/post/ctrl"
+	"app/internal/pkg/post/ent"
 	"app/internal/pkg/post/svc"
 	gossiper "github.com/pieceowater-dev/lotof.lib.gossiper/v2"
 	"log"
@@ -17,7 +18,10 @@ func New() *Module {
 		gossiper.PostgresDB,
 		cfg.Inst().PostgresDatabaseDSN,
 		false,
-		[]any{},
+		[]any{
+			&ent.Post{},
+			&ent.PostLocation{},
+		},
 	)
 	if err != nil {
 		log.Fatalf("Failed to create database instance: %v", err)

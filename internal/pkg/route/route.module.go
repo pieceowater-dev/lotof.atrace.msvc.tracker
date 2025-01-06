@@ -3,6 +3,7 @@ package route
 import (
 	"app/internal/core/cfg"
 	"app/internal/pkg/route/ctrl"
+	"app/internal/pkg/route/ent"
 	"app/internal/pkg/route/svc"
 	gossiper "github.com/pieceowater-dev/lotof.lib.gossiper/v2"
 	"log"
@@ -18,7 +19,10 @@ func New() *Module {
 		gossiper.PostgresDB,
 		cfg.Inst().PostgresDatabaseDSN,
 		false,
-		[]any{},
+		[]any{
+			&ent.Route{},
+			&ent.RouteMilestone{},
+		},
 	)
 	if err != nil {
 		log.Fatalf("Failed to create database instance: %v", err)

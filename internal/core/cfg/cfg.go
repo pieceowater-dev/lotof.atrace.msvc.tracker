@@ -1,9 +1,6 @@
 package cfg
 
 import (
-	postEnt "app/internal/pkg/post/ent"
-	recordEnt "app/internal/pkg/record/ent"
-	routeEnt "app/internal/pkg/route/ent"
 	"fmt"
 	"github.com/joho/godotenv"
 	"os"
@@ -13,7 +10,6 @@ import (
 type Config struct {
 	GrpcPort            string
 	PostgresDatabaseDSN string
-	PostgresModels      []any
 }
 
 var (
@@ -31,15 +27,6 @@ func Inst() *Config {
 		instance = &Config{
 			GrpcPort:            getEnv("GRPC_PORT", "50051"),
 			PostgresDatabaseDSN: getEnv("POSTGRES_DB_DSN", "postgres://pieceouser:pieceopassword@localhost:5432/atrace.tracker?sslmode=disable"),
-			PostgresModels: []any{
-				// models to migration here:
-				// &ent.MyModel{},
-				&postEnt.Post{},
-				&postEnt.PostLocation{},
-				&recordEnt.Record{},
-				&routeEnt.Route{},
-				&routeEnt.RouteMilestone{},
-			},
 		}
 	})
 	return instance

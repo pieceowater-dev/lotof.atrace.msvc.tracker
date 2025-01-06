@@ -3,6 +3,7 @@ package record
 import (
 	"app/internal/core/cfg"
 	"app/internal/pkg/record/ctrl"
+	"app/internal/pkg/record/ent"
 	"app/internal/pkg/record/svc"
 	gossiper "github.com/pieceowater-dev/lotof.lib.gossiper/v2"
 	"log"
@@ -17,7 +18,9 @@ func New() *Module {
 		gossiper.PostgresDB,
 		cfg.Inst().PostgresDatabaseDSN,
 		false,
-		[]any{},
+		[]any{
+			&ent.Record{},
+		},
 	)
 	if err != nil {
 		log.Fatalf("Failed to create database instance: %v", err)
