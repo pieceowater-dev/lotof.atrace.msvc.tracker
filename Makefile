@@ -1,3 +1,4 @@
+# Project configuration
 APP_NAME = lotof.atrace.msvc.tracker
 BUILD_DIR = bin
 MAIN_FILE = cmd/server/main.go
@@ -8,20 +9,18 @@ PROTOC_PKG = github.com/pieceowater-dev/lotof.atrace.proto
 PROTOC_PKG_PATH = $(shell go list -m -f '{{.Dir}}' $(PROTOC_PKG))
 PROTOC_DIR = protos
 PROTOC_OUT_DIR = ./internal/core/grpc/generated
-DOCKER_COMPOSE = docker-compose
 
 export PATH := /usr/local/bin:$(PATH)
 
-.PHONY: all clean build run update migration migrate db-sync setup install-flyway install-atlas install-postgres install-atlas-cli \
-        grpc-gen grpc-clean grpc-update compose-up compose-down gql-gen gql-clean
-
-# Setup the environment
-setup: install-atlas-cli grpc-update
-	@echo "Setup completed!"; \
-	go mod tidy
+.PHONY: all clean build run update setup grpc-gen grpc-clean grpc-update
 
 # Default build target
 all: build
+
+# Setup the environment
+setup: grpc-update
+	@echo "Setup completed!"
+	go mod tidy
 
 # Update dependencies
 update:
@@ -57,25 +56,3 @@ grpc-clean:
 # Update gRPC dependencies
 grpc-update:
 	go get -u $(PROTOC_PKG)@latest
-
-# Docker build target
-build-docker:
-	docker build -t $(APP_NAME) .
-
-# Build Docker image and run the container
-build-and-run-docker: build-docker
-	docker stop $(APP_NAME)
-	docker rm $(APP_NAME)
-	docker run -d -p 50051:50051 \
-		-e POSTGRES_DB_DSN="$(PG_DB_DSN)" \
-		--network lotofsamplesvc_pieceonetwork \
-		--name $(APP_NAME) \
-		$(APP_NAME)
-
-# Start Docker Compose services
-compose-up:
-	$(DOCKER_COMPOSE) up -d
-
-# Stop Docker Compose services
-compose-down:
-	$(DOCKER_COMPOSE) down
