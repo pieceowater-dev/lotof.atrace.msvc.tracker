@@ -9,7 +9,8 @@ import (
 
 type Config struct {
 	GrpcPort            string
-	PostgresDatabaseDSN string
+	Secret              string // Secret key (32 bytes)
+	PostgresDatabaseDSN string // admin db creds
 }
 
 var (
@@ -26,6 +27,7 @@ func Inst() *Config {
 
 		instance = &Config{
 			GrpcPort:            getEnv("GRPC_PORT", "50051"),
+			Secret:              getEnv("SECRET", "12345678901234567890123456789012"),
 			PostgresDatabaseDSN: getEnv("POSTGRES_DB_DSN", "postgres://pieceouser:pieceopassword@localhost:5432/atrace.tracker?sslmode=disable"),
 		}
 	})
