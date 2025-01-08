@@ -14,18 +14,29 @@ type Module struct {
 }
 
 func New() *Module {
+	entities := []any{
+		&ent.Route{},
+		&ent.RouteMilestone{},
+	}
 	// Create database instance
 	database, err := gossiper.NewDB(
 		gossiper.PostgresDB,
 		cfg.Inst().PostgresDatabaseDSN,
 		false,
-		[]any{
-			&ent.Route{},
-			&ent.RouteMilestone{},
-		},
+		entities,
 	)
 	if err != nil {
 		log.Fatalf("Failed to create database instance: %v", err)
+	}
+
+	err = database.MigrateTenants(
+		[]string{
+			"someSchema",
+		},
+		entities,
+	)
+	if err != nil {
+		log.Fatalf("Failed to migrate tenants: %v", err)
 	}
 
 	// Initialize and return the module

@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/pieceowater-dev/lotof.atrace.proto v0.0.12
-	github.com/pieceowater-dev/lotof.lib.gossiper/v2 v2.0.10
+	github.com/pieceowater-dev/lotof.lib.gossiper/v2 v2.0.12
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.35.2
 	gorm.io/gorm v1.25.12

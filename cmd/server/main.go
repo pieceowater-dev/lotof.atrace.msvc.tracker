@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// EXAMPLE, todo - finish this
+	// EXAMPLE, todo: make global CURRENT SCHEMA pass + switching, then store and manage schemas in HUB
 	encryptedTenants := []gossiper.EncryptedTenant{
 		{
 			Namespace:   "someSchema",
