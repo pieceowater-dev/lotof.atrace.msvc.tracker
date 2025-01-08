@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	pb "app/internal/core/grpc/generated"
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
@@ -12,13 +13,8 @@ import (
 
 type contextKey string
 
-type UserMetadata struct {
-	UserID    string
-	Namespace string
-}
-
-func GetUserMetadata(ctx context.Context) (*UserMetadata, bool) {
-	userMetadata, ok := ctx.Value(contextKey("userMetadata")).(*UserMetadata)
+func GetUserMetadata(ctx context.Context) (*pb.UserMetadata, bool) {
+	userMetadata, ok := ctx.Value(contextKey("userMetadata")).(*pb.UserMetadata)
 	return userMetadata, ok
 }
 
@@ -49,7 +45,7 @@ func (md *GrpcMetadata) MiddlewareMethod() grpc.UnaryServerInterceptor {
 	}
 }
 
-func (md *GrpcMetadata) getUserMetadataFromContext(ctx context.Context) (*UserMetadata, error) {
+func (md *GrpcMetadata) getUserMetadataFromContext(ctx context.Context) (*pb.UserMetadata, error) {
 	incoming, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, fmt.Errorf("no metadata found in context")
@@ -59,12 +55,12 @@ func (md *GrpcMetadata) getUserMetadataFromContext(ctx context.Context) (*UserMe
 	if len(userIDs) == 0 || len(namespaces) == 0 {
 		return nil, fmt.Errorf("missing metadata keys: userid or namespace")
 	}
-	return &UserMetadata{
-		UserID:    userIDs[0],
+	return &pb.UserMetadata{
+		UserId:    userIDs[0],
 		Namespace: namespaces[0],
 	}, nil
 }
 
-func (md *GrpcMetadata) withUserMetadata(ctx context.Context, userMetadata *UserMetadata) context.Context {
+func (md *GrpcMetadata) withUserMetadata(ctx context.Context, userMetadata *pb.UserMetadata) context.Context {
 	return context.WithValue(ctx, md.contextUserMetadataKey, userMetadata)
 }
