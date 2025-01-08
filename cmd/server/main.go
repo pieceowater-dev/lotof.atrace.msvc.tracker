@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/internal/core/cfg"
+	"app/internal/core/middleware"
 	"app/internal/pkg"
 	gossiper "github.com/pieceowater-dev/lotof.lib.gossiper/v2"
 	"google.golang.org/grpc"
@@ -10,7 +11,7 @@ import (
 )
 
 func init() {
-	// EXAMPLE, todo: make global CURRENT SCHEMA pass + switching, then store and manage schemas in HUB
+	// EXAMPLE, todo: make schema switching, then store and manage schemas in HUB
 	encryptedTenants := []gossiper.EncryptedTenant{
 		{
 			Namespace:   "someSchema",
@@ -43,7 +44,13 @@ func main() {
 	appCfg := cfg.Inst()
 	appRouter := pkg.NewRouter()
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(
+			middleware.GrpcMiddleware(
+				middleware.NewMetadataMiddleware(),
+			).MiddlewareMethod(),
+		),
+	)
 	reflection.Register(grpcServer)
 
 	serverManager := gossiper.NewServerManager()
