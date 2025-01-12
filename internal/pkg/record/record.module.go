@@ -29,7 +29,7 @@ func New() *Module {
 
 	err = database.MigrateTenants(
 		[]string{
-			"someSchema",
+			"excepteur_ipsum",
 		},
 		entities,
 	)

@@ -11,11 +11,11 @@ import (
 )
 
 func init() {
-	// EXAMPLE, todo: make schema switching, then store and manage schemas in HUB
+	// EXAMPLE, todo: make tenants receiving from hub, then schema switching based on token
 	encryptedTenants := []gossiper.EncryptedTenant{
 		{
-			Namespace:   "someSchema",
-			Credentials: "bIjCI1Y60pThND2uESKYeuWUyf3MIEOfFKn9",
+			Namespace:   "excepteur_ipsum",
+			Credentials: "OQ7lVGX87dk8mvudcteUmHQ7Q4JwKAhP0BnL0ico4RxqcB/ivN9ARmFqahe4qrUnsuiAteWKBaLCWxhZKNHReRNHoyjgLzhL2nmScAi4jQ==",
 		},
 	}
 
@@ -29,7 +29,7 @@ func init() {
 		log.Fatalf("Failed to create database instance: %v", err)
 	}
 
-	tm, err := gossiper.NewTenantManager(database.GetDB(), cfg.Inst().Secret)
+	tm, err := gossiper.NewTenantManager(database.GetDB(), cfg.Inst().AppBundleSecret)
 	if err != nil {
 		log.Fatalf("Failed to create TenantManager: %v", err)
 	}
