@@ -6,8 +6,11 @@ PROTOC = protoc
 PROTOC_GEN_GO = $(GOPATH)/bin/protoc-gen-go
 PROTOC_GEN_GRPC_GO = $(GOPATH)/bin/protoc-gen-go-grpc
 PROTOC_PKG = github.com/pieceowater-dev/lotof.atrace.proto
+EXTERNAL_PROTOC_PKG = github.com/pieceowater-dev/lotof.hub.proto
 PROTOC_PKG_PATH = $(shell go list -m -f '{{.Dir}}' $(PROTOC_PKG))
+EXTERNAL_PROTOC_PKG_PATH = $(shell go list -m -f '{{.Dir}}' $(EXTERNAL_PROTOC_PKG))
 PROTOC_DIR = protos
+EXTERNAL_PROTOC_DIR = protos/lotof.hub.gtw
 PROTOC_OUT_DIR = ./internal/core/grpc/generated
 
 export PATH := /usr/local/bin:$(PATH)
@@ -45,6 +48,15 @@ grpc-gen:
 	mkdir -p $(PROTOC_OUT_DIR)
 	find $(PROTOC_PKG_PATH)/$(PROTOC_DIR) -name "*.proto" | xargs $(PROTOC) \
 		-I $(PROTOC_PKG_PATH)/$(PROTOC_DIR) \
+		--go_out=$(PROTOC_OUT_DIR) \
+		--go-grpc_out=$(PROTOC_OUT_DIR)
+	@echo "gRPC code generation completed!"
+
+grpc-gen-external:
+	@echo "Generating gRPC code from proto files..."
+	mkdir -p $(PROTOC_OUT_DIR)
+	find $(EXTERNAL_PROTOC_PKG_PATH)/$(PROTOC_DIR) -name "*.proto" | xargs $(PROTOC) \
+		-I $(EXTERNAL_PROTOC_PKG_PATH)/$(PROTOC_DIR) \
 		--go_out=$(PROTOC_OUT_DIR) \
 		--go-grpc_out=$(PROTOC_OUT_DIR)
 	@echo "gRPC code generation completed!"

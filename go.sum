@@ -102,6 +102,8 @@ github.com/pelletier/go-toml/v2 v2.2.2 h1:aYUidT7k73Pcl9nb2gScu7NSrKCSHIDE89b3+6
 github.com/pelletier/go-toml/v2 v2.2.2/go.mod h1:1t835xjRzz80PqgE6HHgN2JOsmgYu/h4qDAS4n929Rs=
 github.com/pieceowater-dev/lotof.atrace.proto v0.0.13 h1:NiEu3N5WBNwjtRVjQNvFZwVKRhdNQW/Circg/6oeh9g=
 github.com/pieceowater-dev/lotof.atrace.proto v0.0.13/go.mod h1:u7nd5W/Q8WFa+C72CQJLvD3+um6afR2QvjisUJpsU18=
+github.com/pieceowater-dev/lotof.hub.proto v0.0.38 h1:f71oiI+ppAQ6fgilosznLPSimRRiEtx5dmjY6fV0Jh8=
+github.com/pieceowater-dev/lotof.hub.proto v0.0.38/go.mod h1:9uwfvIUGGzTrTIVzQ4gH8hmrRC8sgtnLUhyPN5swIME=
 github.com/pieceowater-dev/lotof.lib.gossiper/v2 v2.0.15 h1:+DSr7d4awcw70ezURnIU3n6OcyC/ZKuIYR03IEbqKOA=
 github.com/pieceowater-dev/lotof.lib.gossiper/v2 v2.0.15/go.mod h1:XLkDdT/Ll6bY0yTaNmx+rbNDgryvoJwDfg2I6I9cmQ0=
 github.com/pierrec/lz4/v4 v4.1.21 h1:yOVMLb6qSIDP67pl/5F7RepeKYu/VmTyEXvuMI5d9mQ=

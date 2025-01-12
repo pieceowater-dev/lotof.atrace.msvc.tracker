@@ -2,8 +2,10 @@ package main
 
 import (
 	"app/internal/core/cfg"
+	gtw "app/internal/core/grpc/generated"
 	"app/internal/core/middleware"
 	"app/internal/pkg"
+	"context"
 	gossiper "github.com/pieceowater-dev/lotof.lib.gossiper/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -12,11 +14,41 @@ import (
 
 func init() {
 	// EXAMPLE, todo: make tenants receiving from hub, then schema switching based on token
-	encryptedTenants := []gossiper.EncryptedTenant{
-		{
-			Namespace:   "excepteur_ipsum",
-			Credentials: "OQ7lVGX87dk8mvudcteUmHQ7Q4JwKAhP0BnL0ico4RxqcB/ivN9ARmFqahe4qrUnsuiAteWKBaLCWxhZKNHReRNHoyjgLzhL2nmScAi4jQ==",
-		},
+
+	// todo: dump this in independent init func later
+	factory := gossiper.NewTransportFactory()
+	grpcTransport := factory.CreateTransport(
+		gossiper.GRPC,
+		cfg.Inst().HubApplicationAddr,
+	)
+
+	clientConstructor := gtw.NewGatewayServiceClient
+	client, err := grpcTransport.CreateClient(clientConstructor)
+	if err != nil {
+		log.Fatalf("Error creating client: %v", err)
+	}
+	c := client.(gtw.GatewayServiceClient)
+
+	ctx := context.Background()
+
+	response, err := grpcTransport.Send(ctx, c, "GatewayNamespacesByApp", &gtw.GatewayNamespacesByAppRequest{AppBundle: cfg.Inst().AppBundleName})
+	if err != nil {
+		log.Printf("Error sending request: %v", err)
+	}
+
+	res, ok := response.(*gtw.GatewayNamespacesByAppResponse)
+	if !ok {
+		log.Printf("Error converting response to GatewayNamespacesByAppResponse")
+	}
+
+	log.Printf("CreateUser response: %v", response)
+
+	var encryptedTenants []gossiper.EncryptedTenant
+	for _, tenant := range res.Tenants {
+		encryptedTenants = append(encryptedTenants, gossiper.EncryptedTenant{
+			Namespace:   tenant.Namespace,
+			Credentials: tenant.Credentials,
+		})
 	}
 
 	database, err := gossiper.NewDB(

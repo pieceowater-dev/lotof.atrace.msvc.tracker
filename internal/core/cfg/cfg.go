@@ -8,7 +8,9 @@ import (
 )
 
 type Config struct {
+	AppBundleName       string
 	GrpcPort            string
+	HubApplicationAddr  string
 	AppBundleSecret     string // Secret key (32 bytes) to decrypt tenants db data
 	PostgresDatabaseDSN string // admin db creds
 }
@@ -26,7 +28,9 @@ func Inst() *Config {
 		}
 
 		instance = &Config{
+			AppBundleName:       "pieceowater.atrace",
 			GrpcPort:            getEnv("GRPC_PORT", "50051"),
+			HubApplicationAddr:  getEnv("HUB_APPLICATION_ADDR", "localhost:50050"),
 			AppBundleSecret:     getEnv("APP_BUNDLE_SECRET", "12345678901234567890123456789012"),
 			PostgresDatabaseDSN: getEnv("POSTGRES_DB_DSN", "postgres://pieceouser:pieceopassword@localhost:5432/atrace.tracker?sslmode=disable"),
 		}
